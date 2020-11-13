@@ -37,4 +37,29 @@ RSpec.describe User, type: :model do
     )
     expect(user).to_not be_valid
   end
+
+  # 関連付けをテスト
+  describe "Message" do
+    let(:association) do
+      described_class.reflect_on_association(target)
+    end
+
+    # Messageモデルとの関連付けをチェック
+    context "Message" do
+      let(:target) { :messages }
+      # Messageモデルとの関連付けがhas_manyであること
+      it { expect(association.macro).to eq :has_many }
+      # Messageモデルと関連付いていること
+      it { expect(association.class_name).to eq "Message" }
+    end
+
+    # Entryモデルとの関連付けをチェック
+    context "Entry" do
+      let(:target) { :entries }
+      # Entryモデルとの関連付けがhas_manyであること
+      it { expect(association.macro).to eq :has_many }
+      # Entryモデルと関連付いていること
+      it { expect(association.class_name).to eq "Entry" }
+    end
+  end
 end
